@@ -10,7 +10,7 @@ dep = (1-0.33);             //signal after depletion (pelemahan)
 /*********************************************************/
 //SOURCE SIGNAL x(t)
 //time-domain
-[xt, fs] = wavread('Spesifikasi D.wav');    //read signal from audio file
+[xt, fs] = wavread('Spesifikasi B.wav');    //read signal from audio file
 figure(1);
 subplot(2,1,1);
 title('Source Signal x(t) in Time Domain');
