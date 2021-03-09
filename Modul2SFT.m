@@ -97,3 +97,5 @@ H_freq=abs(fft(H))/L;
 H_freq=H_freq(1:(0.5*L)+1);
 H_freq(2:(0.5*L)+1)=2*H_freq(2:(0.5*L)+1);
 end
+
+%%%%%tugas 2
