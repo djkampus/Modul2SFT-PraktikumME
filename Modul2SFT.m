@@ -34,6 +34,8 @@ plot(ht)
 title('Channel h(t) in Time Domain');
 xlabel('t (s)');
 ylabel('amplitude');
+
+
 %%ploting time domain khusus h(t)
 
 %frequency-domain
@@ -68,4 +70,23 @@ plot(axis_single, yt_fft_magnitude_single)
 title('Received Signal y(t) in Frequency Domain')
 xlabel('frequency (Hz)');
 ylabel('magnitude (Watt)');
+
+
+%%%fungsi dari wireless channel
+function [H,channel_axis,H_freq, q]=wadidaw(L,Fs)
+channel_length=1:L;
+channel_axis=(0:L/2)*(Fs/L);
+total_path_loss=0.5;
+loss_coeff=total_path_loss./(sum(exp(-channel_length/8)));
+path_loss=loss_coeff*exp(-channel_length/8); %path loss in power, exponential decay model
+H=zeros(1,length(channel_length)); %channel impulse response
+        for j=1:length(channel_length)
+              q(j) = randn(1,1);
+              H(j)=path_loss(j).*(q(j));
+        end
+H=abs(H);
+H_freq=abs(fft(H))/L;
+H_freq=H_freq(1:(0.5*L)+1);
+H_freq(2:(0.5*L)+1)=2*H_freq(2:(0.5*L)+1);
+end
   
