@@ -1,5 +1,5 @@
 %%%preparation
-
+clear;
 [xt,Fs]=audioread('Spesifikasi B.wav');
 dep=(1-0.94);%prosentase nilai susutan
 L=length(xt);
@@ -22,13 +22,22 @@ subplot(2,1,2)
 plot(axis_single, xt_fft_magnitude_single)
 title('Source Signal x(t) in Frequency Domain');
 xlabel('frequency (Hz)');
-ylabel('magnitude (Watt)');
+ylabel('magnitude');
 
 %%channel h(t)
-deltat = zeros(1,max(size(xt)));
-deltat(1,1)= 1;
+Am = 10;
+tht = -L/2:1:L/2;
+df = dirac(tht);
+ht = df == Inf;
+ht(ht) = 1;
+figure();
+plot(tht,ht*(1-dep));
+xlim([-10, 10]);
+title('Impulse Response');
+xlabel('t');
+ylabel('Magnitude')
 %%time-domain
-ht = dep*deltat;
+ht = dep*ht;
 figure()
 subplot(2,1,1)
 plot(ht)
@@ -68,5 +77,5 @@ subplot(2,1,2)
 plot(axis_single, yt_fft_magnitude_single)
 title('Received Signal y(t) in Frequency Domain')
 xlabel('frequency (Hz)');
-ylabel('magnitude (Watt)');
+ylabel('magnitude');
   

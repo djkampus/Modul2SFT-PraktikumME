@@ -5,39 +5,66 @@ xt = reshape(xt, [],1);
 L = length(xt);
 dt = 1/Fs;            % seconds
 t =(0:L-1)*dt;
-susutan = 0.94;
+susutan = 0.33;
 Am = 10;
-tht = -4:1:4;
+tht = -L/2:1:L/2;
 df = dirac(tht);
 ht = df == Inf;
 ht(ht) = 1;
 y = conv(xt,ht*(1-susutan),'same');
 figure();
 plot(tht,ht*(1-susutan));
-xlim([-10, 10]);
-title('Impulse Response');
+title('Channel Impulse Response - Time');
 xlabel('t');
+ylabel('Magnitude')
+ht=abs(ht);
+Ht_freq=abs(fft(ht))/L;
+Ht_freq=Ht_freq(1:(0.5*L)+1);
+Ht_freq(2:(0.5*L)+1)=2*Ht_freq(2:(0.5*L)+1);
+channel_axis=(0:L/2)*(Fs/L);
+figure();
+plot(Ht_freq);
+xlim([0, 2*10^4]);
+title('Channel Impulse Response - Freq');
+xlabel('Freq');
 ylabel('Magnitude')
 figure();
 plot(t,xt);
-xlim([0, 12]);
-title('Transmitted Signal');
+xlim([0, 6]);
+title('Transmitted Signal - Time');
 xlabel('t');
 ylabel('Amplitude')
+xt_freq=abs(fft(xt))./L;
+xt_freq=xt_freq(1:(0.5*L)+1);
+xt_freq(2:(0.5*L)+1)=2*xt_freq(2:(0.5*L)+1);
+figure();
+plot(channel_axis, xt_freq);
+xlim([0, 2*10^4]);
+title('Transmitted Signal - Frequency');
+xlabel('Freq');
+ylabel('Magnitude')
 figure();
 plot(t,y);
-xlim([0, 12]);
+xlim([0, 6]);
 title('Received Signal');
 xlabel('t');
 ylabel('Amplitude');
-
+yt2_freq=abs(fft(y))./L;
+yt2_freq=yt2_freq(1:(0.5*L)+1);
+yt2_freq(2:(0.5*L)+1)=2*yt2_freq(2:(0.5*L)+1);
+figure();
+plot(channel_axis,yt2_freq);
+xlim([0, (2*10^4)]);
+title('Received Signal - Frequency');
+xlabel('Freq');
+ylabel('Magnitude')
 
 
 %Tugas 2
 [H,channel_axis,H_freq, q] = wadidaw(L, Fs);
 figure();
 plot(t,xt);
-xlim([0, 12]);
+xlim([0, 6]);
 title('Transmitted Signal - Time');
 xlabel('t');
 ylabel('Amplitude')
@@ -68,7 +95,7 @@ yt_freq=yt_freq(1:(0.5*L)+1);
 yt_freq(2:(0.5*L)+1)=2*yt_freq(2:(0.5*L)+1);
 figure();
 plot(t, yt);
-xlim([0, 12]);
+xlim([0, 6]);
 title('Received Signal - Time');
 xlabel('Time');
 ylabel('Amplitude')
