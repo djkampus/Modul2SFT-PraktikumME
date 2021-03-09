@@ -1,52 +1,54 @@
 %%%preparation
-[xt,Fs]=audioread('Spesifikasi B.wav');
+[y,Fs]=audioread('Spesifikasi B.wav');
 dep=(1-0.94);%prosentase nilai susutan
 
 %%%plotting isyarat masukan x(t) dimana adalah sample audio
 %%%dalam ranah waktu
-figure()
-subplot(2,1,1)
-plot(xt)
+figure(1)
+plot(y)
 title('Source Signal x(t) in Time Domain')
 xlabel('t (s)')
 ylabel('amplitude')
 %%dalam ranah frekuensi
 %%dalam ranah frekuensi
-xt_fft = fft(xt);                          
-xt_fft_magnitude = abs(xt_fft);             
-xt_fft_magnitude_single = xt_fft_magnitude(1:0.5*L+1); 
-axis_single = (0:L/2)*(fs/L);
-
-subplot(2,1,2)
-plot(axis_single, xt_fft_magnitude_single)
+L=length(y);
+axis_single = (0:L/2)*(Fs/L);               %%x axis for freq domain
+y_fft_single = fftshift(fft(y));%sinyal yang ingin di fft-kan
+y_fft_single = y_fft_single(L/2+1:end);
+y_fft_single = abs(2*y_fft_single)./L;
+df = Fs/L;
+f = -Fs/2:df:Fs/2-df;
+f = f(L/2+1:end)';
+figure(2)
+plot(f, y_fft_single);   %plot signal in freq domain
 title('Source Signal x(t) in Frequency Domain');
 xlabel('frequency (Hz)');
-ylabel('magnitude (Watt)');
+ylabel('magnitude');
 
 %%channel h(t)
-deltat = zeros(1,max(size(xt)));
+deltat = zeros(1,max(size(y)));
 deltat(1,1)= 1;
 %%time-domain
 ht = dep*deltat;
-figure()
-subplot(2,1,1)
-plot(ht)
+figure(2);
 title('Channel h(t) in Time Domain');
 xlabel('t (s)');
 ylabel('amplitude');
 
 
 %%ploting time domain khusus h(t)
+plot(ht); 
 
 %frequency-domain
 ht_fft = fft(ht);                           %%Forward Fourier Transform (FFT) process
 ht_fft_magnitude = abs(ht_fft);             %%magnitude view and scaling
 ht_fft_magnitude_single = ht_fft_magnitude(1:0.5*L+1);  %%first half of freq domain
-subplot(2,1,2)
+figure()
 plot(axis_single, ht_fft_magnitude_single);   %plot signal in freq domain
 title('Channel h(t) in Frequency Domain');
 xlabel('frequency (Hz)');
 ylabel('magnitude');
+<<<<<<< HEAD
 
 
 %RECEIVED SIGNAL y(t)
@@ -90,3 +92,5 @@ H_freq=H_freq(1:(0.5*L)+1);
 H_freq(2:(0.5*L)+1)=2*H_freq(2:(0.5*L)+1);
 end
   
+=======
+>>>>>>> parent of ab118c0 (sekarang udah bener untuk pengerjaan 1)
