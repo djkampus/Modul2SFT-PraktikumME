@@ -1,7 +1,8 @@
 %%%preparation
+clear;
 [xt,Fs]=audioread('Spesifikasi B.wav');
 dep=(1-0.94);%prosentase nilai susutan
-
+L=length(xt);
 %%%plotting isyarat masukan x(t) dimana adalah sample audio
 %%%dalam ranah waktu
 figure()
@@ -15,7 +16,7 @@ ylabel('amplitude')
 xt_fft = fft(xt);                          
 xt_fft_magnitude = abs(xt_fft);             
 xt_fft_magnitude_single = xt_fft_magnitude(1:0.5*L+1); 
-axis_single = (0:L/2)*(fs/L);
+axis_single = (0:L/2)*(Fs/L);
 
 subplot(2,1,2)
 plot(axis_single, xt_fft_magnitude_single)
@@ -62,7 +63,7 @@ ylabel('amplitude');
 yt_fft = fft(yt);
 yt_fft_magnitude = abs(yt_fft);           
 yt_fft_magnitude_single = yt_fft_magnitude(1:0.5*L+1);  
-axis_single = (0:L/2)*(fs/L); 
+axis_single = (0:L/2)*(Fs/L); 
 subplot(2,1,2)
 plot(axis_single, yt_fft_magnitude_single)
 title('Received Signal y(t) in Frequency Domain')
