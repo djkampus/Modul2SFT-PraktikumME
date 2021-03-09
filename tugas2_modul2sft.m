@@ -1,17 +1,21 @@
-%%prep
+%%preparation
 [xt, Fs] = audioread('Spesifikasi B.wav');
 xt = reshape(xt, [],1);
 L = length(xt);
 dt = 1/Fs;            % seconds
 t =(0:L-1)*dt;
 %Tugas 2
-[H,channel_axis,H_freq, q] = wadidaw(L, Fs);
+
+%%%xt time domain
+[H,channel_axis,H_freq, q] = wireless_channel(L, Fs);%panggil fungsi wireless_channel
 figure();
 plot(t,xt);
 xlim([0, 6]);
 title('Transmitted Signal - Time');
 xlabel('t');
 ylabel('Amplitude')
+
+%%%freq domain
 xt_freq=abs(fft(xt))./L;
 xt_freq=xt_freq(1:(0.5*L)+1);
 xt_freq(2:(0.5*L)+1)=2*xt_freq(2:(0.5*L)+1);
@@ -21,36 +25,44 @@ xlim([0, 2*10^4]);
 title('Transmitted Signal - Frequency');
 xlabel('Freq');
 ylabel('Magnitude')
+
+%%impulse-time domain
 figure();
+subplot(2,1,1)
 plot(t, H);
 xlim([0, 0.002]);
 title('Channel Impulse Response - Time');
 xlabel('t');
 ylabel('Amplitude')
-figure();
+%%%freq domain
+subplot(2,1,2)
 plot(channel_axis, H_freq);
 xlim([0, 2*10^4]);
 title('Channel Impulse Response - Freq');
 xlabel('Freq');
 ylabel('Magnitude')
+
+%%received signal
 yt = conv(xt,H,'same');
 yt_freq=abs(fft(yt))./L;
 yt_freq=yt_freq(1:(0.5*L)+1);
 yt_freq(2:(0.5*L)+1)=2*yt_freq(2:(0.5*L)+1);
 figure();
+subplot(2,1,1)
 plot(t, yt);
 xlim([0, 6]);
 title('Received Signal - Time');
 xlabel('Time');
 ylabel('Amplitude')
-figure();
+%%freq domain
+subplot(2,1,2)
 plot(channel_axis,yt_freq);
 xlim([0, (2*10^4)]);
 title('Received Signal - Frequency');
 xlabel('Freq');
 ylabel('Magnitude')
 
-function [H,channel_axis,H_freq, q]=wadidaw(L,Fs)
+function [H,channel_axis,H_freq, q]=wireless_channel(L,Fs)
 channel_length=1:L;
 channel_axis=(0:L/2)*(Fs/L);
 total_path_loss=0.5;
